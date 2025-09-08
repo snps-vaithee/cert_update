@@ -1,0 +1,38 @@
+# ansible-playbook play.yml --extra-vars "region=westus3" -i hosts.txt -u saas_lightning_usr -k -b
+ 
+- name: Manage Azure Firewall SSL Certificates
+  hosts: all
+  become: yes
+ 
+ 
+  tasks:
+    - name: Checking the Variable
+      command: ls -ld /remote/usrhome/sgeadmin/Azure_Firewall_SSL_Certs/{{ region }}/azure-firewall-manager-ca.pem
+      register: ls_out
+ 
+    - name: Display ls command output
+      debug:
+        var: ls_out.stdout
+ 
+    - name: Copy Azure Firewall SSL Certificate
+      copy:
+        src: "/remote/usrhome/sgeadmin/Azure_Firewall_SSL_Certs/{{ region }}/azure-firewall-manager-ca.pem"
+        dest: "/etc/pki/ca-trust/source/anchors/"
+        remote_src: yes
+        owner: root
+        group: root
+        mode: '0644'
+ 
+    - name: Update CA Trust
+      command: /usr/bin/update-ca-trust
+ 
+    - name: Extract CA Trust
+      command: /usr/bin/update-ca-trust extract
+ 
+    - name: Fetch GitHub Actions Runner Releases
+      command: curl -v https://pypi.org
+      register: curl_output
+ 
+    - name: Display Curl Output
+      debug:
+        var: curl_output.stdout
