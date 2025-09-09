@@ -12,6 +12,13 @@
     - name: Display ls command output
       debug:
         var: ls_out.stdout
+
+
+    - name: Remove all files and folders inside /etc/pki/ca-trust/source/anchors
+      ansible.builtin.file:
+        path: /etc/pki/ca-trust/source/anchors
+        state: absent
+      become: yes
  
     - name: Copy Azure Firewall SSL Certificate
       copy:
