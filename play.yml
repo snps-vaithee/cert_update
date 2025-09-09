@@ -4,7 +4,6 @@
   hosts: all
   become: yes
  
- 
   tasks:
     - name: Checking the Variable
       command: ls -ld /remote/usrhome/sgeadmin/Azure_Firewall_SSL_Certs/{{ region }}/azure-firewall-manager-ca.pem
@@ -36,3 +35,13 @@
     - name: Display Curl Output
       debug:
         var: curl_output.stdout
+
+    - name: Verification of SSL Certificate
+      command: openssl x509 -in //etc/pki/ca-trust/extarcted/openssl/*.pem -text | grep Date
+      register: cert_output
+
+    - name: Display cert_output
+      debug:
+        var: cert_output.stdout
+
+ 
