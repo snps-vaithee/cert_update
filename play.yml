@@ -44,7 +44,7 @@
         var: curl_output.stdout
 
     - name: Verification of SSL Certificate
-      command: openssl x509 -in //etc/pki/ca-trust/extarcted/openssl/*.pem -text | grep Date
+      command: openssl x509 -in /etc/pki/ca-trust/extracted/openssl/ca-bundle.trust.crt -text | grep Date
       register: cert_output
 
     - name: Display cert_output
